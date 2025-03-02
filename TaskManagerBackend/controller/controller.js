@@ -1,8 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db/db");
+  
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
 
-router.post("/users", async (req, res) => {
+  const [users] = await db.execute("SELECT * FROM users WHERE username = ? AND password = ?", [username, password]);
+
+  if (users.length === 0) return res.status(401).json({ error: "Invalid credentials" });
+
+  res.json({ user: users[0] });
+});
+
+  router.post("/user", async (req, res) => {
     const { username, password } = req.body;
     
     try {
@@ -13,18 +23,8 @@ router.post("/users", async (req, res) => {
       res.status(500).json({ error: "User already exists or DB error" });
     }
   });
-  
-  router.post("/login", async (req, res) => {
-    const { username, password } = req.body;
 
-    const [users] = await db.execute("SELECT * FROM users WHERE username = ? AND password = ?", [username, password]);
-  
-    if (users.length === 0) return res.status(401).json({ error: "Invalid credentials" });
-  
-    res.json({ user: users[0] });
-  });
-
-  router.delete("/users/:id", async (req, res) => {
+  router.delete("/user/:id", async (req, res) => {
     const { id } = req.params;
   
     try {
