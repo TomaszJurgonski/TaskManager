@@ -1,0 +1,14 @@
+SELECT id, username, password FROM users WHERE username = {username} AND password = {password};
+
+SELECT title, description, status FROM tasks JOIN users ON user_id = users.id WHERE users.id = "{userid}";
+
+INSERT INTO users (username, password) VALUES ("{username}", "{password}");
+
+INSERT INTO tasks (title, description, status, user_id) VALUES ("{title}", "{description}", "{status}", "{userid}");
+
+UPDATE tasks SET title="{newtitle}", description="{newdescription}", status="{newstatus}" WHERE id="{taskid}";
+
+DELETE FROM tasks WHERE id="{taskid}";
+
+DELETE FROM tasks WHERE user_id="{userid}" AND id="{taskid}";
+DELETE FROM users WHERE id="{userid}";
